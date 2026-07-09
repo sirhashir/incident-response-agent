@@ -1,0 +1,7 @@
+[
+  {"time": "14:31:58", "level": "INFO", "message": "checkout request received, order_id=8841"},
+  {"time": "14:32:01", "level": "ERROR", "message": "PaymentGatewayTimeoutException: upstream did not respond within 3000ms"},
+  {"time": "14:32:03", "level": "ERROR", "message": "PaymentGatewayTimeoutException: upstream did not respond within 3000ms"},
+  {"time": "14:32:05", "level": "ERROR", "message": "PaymentGatewayTimeoutException: upstream did not respond within 3000ms"},
+  {"time": "14:32:10", "level": "WARN", "message": "circuit breaker OPEN for payment-gateway"}
+]  

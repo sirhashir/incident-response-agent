@@ -1,0 +1,6 @@
+[
+  {"time": "12:00:00", "level": "WARN", "message": "GC pause 800ms"},
+  {"time": "12:15:00", "level": "WARN", "message": "GC pause 1400ms"},
+  {"time": "12:30:00", "level": "WARN", "message": "GC pause 2600ms"},
+  {"time": "12:44:50", "level": "ERROR", "message": "java.lang.OutOfMemoryError: Java heap space"}
+]

@@ -1,0 +1,5 @@
+[
+  {"time": "16:01:00", "level": "WARN", "message": "503 Service Unavailable, retrying"},
+  {"time": "16:03:22", "level": "WARN", "message": "503 Service Unavailable, retrying"},
+  {"time": "16:07:41", "level": "WARN", "message": "503 Service Unavailable, retrying"}
+]

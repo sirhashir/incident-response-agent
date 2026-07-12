@@ -1,0 +1,6 @@
+[
+  {"time": "14:20:44", "level": "ERROR", "message": "failed to refresh cache: remote config unreachable"},
+  {"time": "14:32:01", "level": "ERROR", "message": "connection pool exhausted: 0/50 available"},
+  {"time": "14:32:04", "level": "ERROR", "message": "connection pool exhausted: 0/50 available"},
+  {"time": "14:32:09", "level": "ERROR", "message": "connection pool exhausted: 0/50 available"}
+]

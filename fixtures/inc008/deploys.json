@@ -1,4 +1,4 @@
 [
-  {"service": "checkout", "deployed_at": "2026-07-05T09:00:00Z", "version": "v2.14.0"},
+  {"service": "payment-gateway", "deployed_at": "2026-07-11T08:00:00Z", "version": "v1.9.3"},
   {"service": "payment-gateway", "deployed_at": "2026-07-08T14:15:00Z", "version": "v1.9.2"}
 ]

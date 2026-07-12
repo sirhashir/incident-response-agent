@@ -1,0 +1,5 @@
+[
+  {"time": "09:15:03", "level": "ERROR", "message": "403 Forbidden calling auth-service /validate"},
+  {"time": "09:15:07", "level": "ERROR", "message": "403 Forbidden calling auth-service /validate"},
+  {"time": "09:15:12", "level": "ERROR", "message": "403 Forbidden calling auth-service /validate"}
+]

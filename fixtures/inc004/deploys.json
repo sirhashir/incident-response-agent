@@ -1,0 +1,5 @@
+[
+  {"service": "checkout", "deployed_at": "2026-07-11T15:10:00Z", "version": "v2.16.0"},
+  {"service": "auth", "deployed_at": "2026-07-11T15:40:00Z", "version": "v3.2.0"},
+  {"service": "inventory", "deployed_at": "2026-07-11T15:55:00Z", "version": "v1.4.0"}
+]

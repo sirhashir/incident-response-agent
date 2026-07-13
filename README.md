@@ -52,6 +52,12 @@ Run 3: 7/10 (70%). Root-caused the under-confidence to a prompt-framing bias: as
 
 This progression, not the final number, is the real result. It shows the eval suite doing its job: finding a real, specific, fixable problem, and then finding the boundary of that fix.
 
+**Two further findings from adding a third tool (`query_metrics`):**
+
+The tool was initially wired into the code but never added to the LLM's tool-selection prompt, so it was silently unreachable. Once added, `query_metrics` became the model's preferred first choice in most cases. This surfaced a real behavior worth naming: the model treats numeric metrics as inherently suspicious, producing hypotheses like "likely a CPU spike" even when the underlying fixture data was unremarkable. This is a mild hallucination pattern specific to numeric evidence, distinct from the earlier confidence-framing issue.
+
+Separately, the grader was found to check only the final hypothesis string, while `reason_node` overwrites that field on each loop iteration. A correct diagnosis reached on an earlier pass could be lost if a later pass rephrased it without the exact grading keywords. Fixed by accumulating a hypothesis history across iterations and grading against the full trail instead of just the last value. This also surfaced a second, smaller issue: the golden dataset's keyword list for one case was too narrow, rejecting a correct diagnosis phrased as "method not found exception" because it didn't contain the literal word "deploy." Fixed by broadening accepted phrasings to match how the model actually describes a correct root cause, not just one expected wording.
+
 ## Known limitations
 
 - Only two evidence-gathering tools. Once both are used, the agent repeats one rather than escalating for a third data source (a `query_metrics` tool would close this gap, see Roadmap)

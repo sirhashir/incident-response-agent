@@ -26,3 +26,12 @@ def get_deploy_history(service: str) -> list[dict]:
             return json.load(f)
     except FileNotFoundError:
         return []
+    
+def query_metrics(service: str) -> list[dict]:
+    """Return recent metric snapshots (CPU, memomry, error rate) for a service."""
+    path = os.path.join(FIXTURE_DIR, CURRENT_INCIDENT, "metrics.json")
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []

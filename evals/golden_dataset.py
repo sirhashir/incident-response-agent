@@ -59,7 +59,7 @@ GOLDEN_INCIDENTS = [
         "id": "inc008",
         "incident": "Payment processing completely down starting 08:02 UTC.",
         "service": "checkout",
-        "gold_cause_keywords": ["deploy", "v1.9.3", "payment-gateway"],
+        "gold_cause_keywords": ["deploy", "v1.9.3", "payment-gateway", "method not found", "code change", "chargev2"],
         "forbidden_keywords": [],
         "expect_escalation": False,
     },

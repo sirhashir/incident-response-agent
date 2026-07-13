@@ -1,12 +1,13 @@
 from typing import TypedDict, Annotated
 import operator
-from tools import fetch_logs, get_deploy_history
+from tools import fetch_logs, get_deploy_history, query_metrics
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import interrupt
 from langgraph.types import Command
 from memory import save_incident, recall_similar
+import tools
 
 class IncidentState(TypedDict):
     incident: str
@@ -18,6 +19,7 @@ class IncidentState(TypedDict):
     iterations: int
     proposed_action: str
     approved: str
+    hypothesis_history: Annotated[list, operator.add]
 
 def act_node(state: IncidentState) -> IncidentState:
     already_checked = [item["tool"] for item in state["evidence"]]
@@ -28,10 +30,11 @@ def act_node(state: IncidentState) -> IncidentState:
             Available tools:
             - fetch_logs: get recent log lines for the service
             - get_deploy_history: get recent deployments for the service
+            - query_metrics: get recent CPU, memory, and error rate metrics for the service
 
             Which tool should be used next to investigate further? If a tool was already used and you want different information, prefer a tool not yet used.
-            Answer with exactly one word: fetch_logs or get_deploy_history"""
-    
+            Answer with exactly one word: fetch_logs, get_deploy_history, or query_metrics"""
+        
     response = llm.invoke(prompt)
     choice = response.content.strip().lower()
 
@@ -41,6 +44,9 @@ def act_node(state: IncidentState) -> IncidentState:
     if "deploy" in choice:
         result = get_deploy_history(service)
         tool_used = "get_deploy_history"
+    elif "metric" in choice:
+        result = query_metrics(service)
+        tool_used = "query_metrics"
     else:
         result = fetch_logs(service)
         tool_used = "fetch_logs"
@@ -109,6 +115,7 @@ def reason_node(state: IncidentState) -> IncidentState:
     
     return {
         "hypothesis": hypothesis,
+        "hypothesis_history": [hypothesis],
         "enough_evidence": enough,
         "iterations": state["iterations"] + 1
     }
@@ -159,6 +166,8 @@ def save_node(state: IncidentState) -> IncidentState:
     return {}
 
 def route_after_reason(state: IncidentState) -> str:
+    if state["iterations"] < 2:
+        return "act"
     if state["enough_evidence"] == "yes":
         return "done"
     if state["iterations"] >= 3:
@@ -192,6 +201,8 @@ graph = builder.compile(checkpointer=checkpointer)
 config = {"configurable": {"thread_id": "incident-001"}}
 
 if __name__ == "__main__":
+
+    tools.set_incident("inc001")
     
     result = graph.invoke({
         "incident": "Checkout service error rate jumped from 0.1% to 12% at 14:32 UTC.",
@@ -199,6 +210,7 @@ if __name__ == "__main__":
         "plan": "",
         "evidence": [],
         "hypothesis": "",
+        "hypothesis_history": [],
         "enough_evidence": "",
         "iterations": 0,
         "proposed_action": "",

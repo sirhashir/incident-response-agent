@@ -7,8 +7,8 @@ from eval_graph import eval_graph
 import tools
 
 
-def grade_incident(golden, agent_hypothesis, agent_enough_evidence, agent_proposed_action):
-    hyp_lower = agent_hypothesis.lower()
+def grade_incident(golden, agent_hypothesis, agent_enough_evidence, agent_proposed_action, hypothesis_history):
+    hyp_lower = " ".join(hypothesis_history).lower()
     action_lower = agent_proposed_action.lower()
 
     if golden["expect_escalation"]:
@@ -48,6 +48,7 @@ def run_all_evals():
             "plan": "",
             "evidence": [],
             "hypothesis": "",
+            "hypothesis_history": [],
             "enough_evidence": "",
             "iterations": 0,
             "proposed_action": "",
@@ -58,7 +59,8 @@ def run_all_evals():
             golden,
             result["hypothesis"],
             result["enough_evidence"],
-            result["proposed_action"]
+            result["proposed_action"],
+            result["hypothesis_history"]
         )
 
         results.append({

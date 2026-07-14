@@ -41,15 +41,26 @@ def act_node(state: IncidentState) -> IncidentState:
     print(f"act_node: LLM chose '{choice}' (already checked: {already_checked})")
 
     service = state["service"]
+    all_tools = ["fetch_logs", "get_deploy_history", "query_metrics"]
+    unused = [t for t in all_tools if t not in already_checked]
+
     if "deploy" in choice:
-        result = get_deploy_history(service)
         tool_used = "get_deploy_history"
     elif "metric" in choice:
-        result = query_metrics(service)
         tool_used = "query_metrics"
     else:
-        result = fetch_logs(service)
         tool_used = "fetch_logs"
+
+    if tool_used in already_checked and unused:
+        tool_used = unused[0]
+        print(f"act_node: LLM repeated '{choice}', overriding to unused tool '{tool_used}'")
+
+    if tool_used == "get_deploy_history":
+        result = get_deploy_history(service)
+    elif tool_used == "query_metrics":
+        result = query_metrics(service)
+    else:
+        result = fetch_logs(service)
 
     return {"evidence": [{"tool": tool_used, "result": result}]}
 

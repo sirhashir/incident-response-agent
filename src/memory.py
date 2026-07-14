@@ -47,6 +47,22 @@ def recall_similar(service, limit=3):
     print(f"recall_similar: found {len(past)} past incident(s) for '{service}'")
     return past
 
+def reset_and_seed_memory(seed_incidents):
+    """Clear the incidents table and insert a known fixed set. Used by evals only."""
+    with psycopg.connect(DB_CONFIG) as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM incidents")
+            for inc in seed_incidents:
+                cur.execute(
+                    """
+                    INSERT INTO incidents (service, incident_description, hypothesis, proposed_action, approved)
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                    (inc["service"], inc["incident"], inc["hypothesis"], inc["proposed_action"], inc["approved"])
+                )
+        conn.commit()
+    print(f"Seeded memory with {len(seed_incidents)} known past incidents.")
+
 if __name__ == "__main__":
     results = recall_similar("checkout")
     for r in results:

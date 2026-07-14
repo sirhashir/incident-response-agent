@@ -1,11 +1,11 @@
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
-
 from golden_dataset import GOLDEN_INCIDENTS
 from eval_graph import eval_graph
 import tools
-
+from seed_memory import SEED_INCIDENTS
+from memory import reset_and_seed_memory
 
 def grade_incident(golden, agent_hypothesis, agent_enough_evidence, agent_proposed_action, hypothesis_history):
     hyp_lower = " ".join(hypothesis_history).lower()
@@ -32,6 +32,7 @@ def grade_incident(golden, agent_hypothesis, agent_enough_evidence, agent_propos
 
 
 def run_all_evals():
+    reset_and_seed_memory(SEED_INCIDENTS)
     results = []
 
     for golden in GOLDEN_INCIDENTS:

@@ -1,0 +1,4 @@
+[
+  {"time": "15:44:12", "level": "ERROR", "message": "java.lang.OutOfMemoryError: Java heap space"},
+  {"time": "15:44:15", "level": "ERROR", "message": "java.lang.OutOfMemoryError: Java heap space"}
+]

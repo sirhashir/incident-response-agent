@@ -1,0 +1,5 @@
+[
+  {"time": "07:40:00", "level": "ERROR", "message": "IOException: No space left on device"},
+  {"time": "07:40:03", "level": "ERROR", "message": "IOException: No space left on device"},
+  {"time": "07:40:08", "level": "ERROR", "message": "failed to write order record: disk full"}
+]

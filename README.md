@@ -75,7 +75,7 @@ Separately, the grader was found to check only the final hypothesis string, whil
 ## Running it
 
 Start Postgres in Docker:
-`docker run --name incident-db -e POSTGRES_PASSWORD=devpassword -e POSTGRES_DB=incidents -p 5434:5432 -d postgres:16`
+`docker run --name incident-db -e POSTGRES_PASSWORD=changeme -e POSTGRES_DB=incidents -p 5434:5432 -d postgres:16`
 
 Pull and start Ollama:
 `ollama pull llama3.1:8b`

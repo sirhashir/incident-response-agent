@@ -79,4 +79,36 @@ GOLDEN_INCIDENTS = [
         "forbidden_keywords": [],
         "expect_escalation": False,
     },
+    {
+        "id": "inc011",
+        "incident": "Payment gateway service failing to process authorizations starting 10:15 UTC.",
+        "service": "payment-gateway",
+        "gold_cause_keywords": ["bank-api", "bank api", "upstream", "connection refused"],
+        "forbidden_keywords": ["timeout", "circuit breaker"],
+        "expect_escalation": False,
+    },
+    {
+        "id": "inc012",
+        "incident": "Checkout service returning 503 errors starting 18:22 UTC.",
+        "service": "checkout",
+        "gold_cause_keywords": ["payment gateway", "payment-gateway", "recurring", "past incident", "similar"],
+        "forbidden_keywords": [],
+        "expect_escalation": False,
+    },
+    {
+        "id": "inc013",
+        "incident": "Checkout service write failures starting 07:40 UTC.",
+        "service": "checkout",
+        "gold_cause_keywords": ["disk", "space"],
+        "forbidden_keywords": ["payment gateway", "payment-gateway"],
+        "expect_escalation": False,
+    },
+    {
+        "id": "inc014",
+        "incident": "Checkout service crashed at 15:44 UTC with out of memory errors.",
+        "service": "checkout",
+        "gold_cause_keywords": ["memory leak", "leak", "gradual", "pre-existing", "heap"],
+        "forbidden_keywords": ["v2.18", "rollback", "roll back"],
+        "expect_escalation": False,
+    }
 ]

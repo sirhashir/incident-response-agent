@@ -1,0 +1,6 @@
+[
+  {"time": "10:15:02", "level": "ERROR", "message": "ConnectionRefused calling bank-api /authorize"},
+  {"time": "10:15:06", "level": "ERROR", "message": "ConnectionRefused calling bank-api /authorize"},
+  {"time": "10:15:11", "level": "ERROR", "message": "ConnectionRefused calling bank-api /authorize"},
+  {"time": "10:15:20", "level": "WARN", "message": "bank-api marked DOWN by health check"}
+]

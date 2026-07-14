@@ -1,0 +1,4 @@
+[
+  {"time": "07:39:00", "cpu_pct": 19, "mem_pct": 36, "error_rate_pct": 0.1, "disk_pct": 99},
+  {"time": "07:40:00", "cpu_pct": 20, "mem_pct": 37, "error_rate_pct": 22.0, "disk_pct": 100}
+]

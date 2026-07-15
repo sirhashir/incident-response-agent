@@ -72,6 +72,29 @@ Separately, the grader was found to check only the final hypothesis string, whil
 - Langfuse tracing for full run observability
 - Real integrations (Datadog, Kubernetes API) in place of fixture-based tools
 
+## Multi-agent architecture
+
+The single agent above conflates two different jobs in one model: gathering evidence and judging whether that evidence is sufficient. This section documents a second architecture that splits those explicitly, and what happened when it was evaluated against the same 14-case suite.
+
+**Design.** A supervisor owns judgment: it sets investigation goals, forms the hypothesis, and decides whether to act or escalate. An investigator owns evidence gathering only: it receives a goal, picks whichever tool serves it, and reports findings without drawing conclusions. The investigator never judges; the supervisor never touches a tool.
+
+**First result: 5/14 (36%), a regression.** The supervisor's planning prompt included an example goal phrasing referencing "past patterns," and with memory visible from the very first round, the model anchored on it almost every time regardless of the actual incident. Cases with no relationship to the seeded payment-gateway history, including a disk-full case with a clearly contradicting root cause, still opened with a payment-gateway investigation goal.
+
+**Second result, after removing the biasing example and hiding history during the first investigation round: 11/14 (79%), beating the single agent's 10/14.** This fixed the two things multi-agent was meant to fix. Memory now correctly informs the conclusion instead of being ignored (previously failing), and a clear-evidence case with misleading history now correctly resists that history (previously prone to failing this exact way in the single-agent version too).
+
+**Remaining limitation, found and left undisturbed.** Hiding history only for the first round delays the anchoring bias rather than removing it. On cases needing more than one clean reasoning pass, the bias can resurface starting round two, once history becomes visible again. This was directly observed on the case requiring cross-tool timeline reasoning (distinguishing a pre-existing memory leak from a coincidentally-timed deploy): the supervisor's second-round investigation goal referenced payment gateway despite nothing in the case pointing there, and the final hypothesis was pulled off course by a goal that had already anchored on the wrong thing.
+
+**Honest comparison, single-agent vs multi-agent:**
+
+| | Single agent | Multi-agent |
+|---|---|---|
+| Score | 10/14 (71%) | 11/14 (79%) |
+| Memory correctly used | No (inc012 failed) | Yes |
+| Memory correctly resisted when misleading | Partial | Yes |
+| Cross-tool timeline reasoning | Passed | Failed (new regression) |
+
+Multi-agent is a net improvement on this suite, but not a strictly dominant one. It traded one class of failure for a different, narrower one, which is a more interesting and more honest result than a clean win in either direction.
+
 ## Running it
 
 Start Postgres in Docker:
